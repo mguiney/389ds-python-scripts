@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/python3
 
 ###################################################################
 #  olc to 389 schema formatting script, implemented in python 3   #
