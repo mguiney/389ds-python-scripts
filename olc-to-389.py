@@ -38,13 +38,14 @@ def reformat(x):
     if 'SchemaConfig' in x: 
       return '#' 
     elif '#' in x:
-      return '#'
+      delim = '#'
+      return x.split(delim, 1)[0]
     else: 
       return (x) 
 
 def makefile(filename):
     filename = filename[3:]
-    newfile = "98"+ filename
+    newfile = priority + filename
     file = open( newfile, "w")
     file.close()
     return newfile 
@@ -57,6 +58,10 @@ def main():
   elif str(sys.argv[1]) == "--help":
     help()
   else:
+    if str(sys.argv[2]) == "-p" :
+      priority = str(sys.argv[3])
+    else:
+      priority = 98
     filename = sys.argv[1]
     ldif_chk = ".ldif"
     if ldif_chk in filename: 
