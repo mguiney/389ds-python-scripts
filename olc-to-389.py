@@ -12,7 +12,9 @@ import sys
 def help():
     print("This script parses olc-format LDIFs and converts them to 389 format")
     print("It takes one argument, and that is the olc-formatted LDIF you wish to use")
-    print("The help flag, as you may have figured out, is --help")
+    print("--help:  help flag; spits out command description and flags.")
+    print("-p:      load flag; sets schema loading priority for the new file.")
+    
 
 def translate(entries, newfile):
     #gonna give it a static dn, since all schema files have the same dn in 389
