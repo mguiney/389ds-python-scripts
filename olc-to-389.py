@@ -2,7 +2,7 @@
 
 ###################################################################
 #  olc to 389 schema formatting script, implemented in python 3   #
-#  written by Megan Guiney (Valkyrie, to any Katzen seeing this)  #
+#  written by Megan Guiney                                        #
 #  includes help flag, more features to come                      #
 ###################################################################
 
