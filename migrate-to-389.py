@@ -27,9 +27,9 @@ def branchscrape(x, filename):
   while i < len(c.entries):
     fo.write(str(c.entries[i].entry_to_ldif()))
     i = i + 1
-    newfile = ldif_cleanup(filename)
-    os.remove(filename)
-    return newfile
+  newfile = ldif_cleanup(filename)
+  os.remove(filename)
+  return newfile
 
 def get_filename(x):
   x = x[3:]
