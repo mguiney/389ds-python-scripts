@@ -7,6 +7,7 @@
 - Features/Commits (with completion dates)
   -  7/27/16: Initial commit. Includes basic input sanitization and "--help" flag
   -  7/29/16: Small bugfix; added -p flag, which allows user to set load priority of the new file
+  -  8/4/16:  Another small bugfix; switched from manual flag parsing to using argparse
   
 - Planned Features
   - A "-r" flag that allows for the parsing of multiple files at once
