@@ -21,10 +21,12 @@
     -  8/3/16: Initial commit. Still very quirky, doesn't have full functionality
   
   -  Planned Features 
+    - A test to confirm that there is an ldap server running on a remote machine specified by the user, and exit the process if   there is not. 
+    - The ability to populate the new directory tree remotely using credentials provided by a user
     - Basically, I want this taking nearly all user input from the command line. This includes: 
       - a "-s" flag that indicates the domain name of the new server
       - a "-u" flag that indicates the dn of the admin user that the script will be ldapadd-ing as 
-      - a "-p" flag that passes in the password needed to authenticate as the admin user listed above
+      - a "-p" flag that passes in the password needed to authenticate as the admin user listed above 
     - Will also be adding a "--help" flag that lists the functionality of the above flags, for obvious reasons. 
   
 ################################################################################################################################
