@@ -10,6 +10,14 @@ import re
 import sys
 import argparse
 
+def parse_args():
+  parser = argparse.ArgumentParser(description = 'Automatically translates OpenLdap schema files to 389-ds format.')
+  parser.add_argument('filename', metavar='F', type=str, nargs='+', help='name of file to be converted.')
+  parser.add_argument('-p', '--priority', dest='priority', action='store', default='98', type=int, help='specifiy the priority level of the new 389 schema file')
+  args = parser.parse_args()
+  filename = str(args.filename[0])
+  priority = str(args.priority)
+  return filename, priority
     
 
 def translate(entries, newfile):
@@ -51,13 +59,7 @@ def makefile(filename, priority):
   return newfile 
 
 def main():
-  parser = argparse.ArgumentParser(description = 'Automatically translates OpenLdap schema files to 389-ds format.')
-  parser.add_argument('filename', metavar='F', type=str, nargs='+', help='name of file to be converted.')
-  parser.add_argument('-p', '--priority', dest='priority', action='store', default='98', type=int, help='specifiy the priority level of the new 389 schema file')
-  args = parser.parse_args()
-  filename = str(args.filename[0])
-  priority = str(args.priority)
-  #argparsing complete
+  filename, priority = parse_args()
   ldif_chk = ".ldif"
   if ldif_chk in filename: 
     newfile = makefile(filename, priority)
