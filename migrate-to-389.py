@@ -2,6 +2,24 @@
 
 from ldap3 import *
 import os
+from subprocess import * 
+
+def populate_tree(newfile, new_serv, usrname, pswd):
+  #first we define and bind to our new server
+  global newconn
+  s = Server(new_serv, get_info=ALL)
+  c = Connection(s, user = usrname, password = pswd)
+  if not c.bind():
+    print('error in bind', c.result)
+  result = Popen(["ldapadd", "-h", new_serv, "-D", usrname, "-w", pswd, "-f", newfile], stdout=PIPE)
+  print result
+  
+
+def get_creds(): 
+  new_serv = str(raw_input("Enter the fully qualified hostname of the server you are migrating to: "))
+  usrname = str(raw_input("Enter the fully qualified dn of the admin user you will be using to build your tree: "))
+  pswd = str(raw_input("Enter the password of the admin user you entered above:"))
+  return new_serv, usrname, pswd
 
 def ldif_cleanup(filename):
   newfile = filename[1:] 
@@ -15,7 +33,6 @@ def ldif_cleanup(filename):
       nfo.write(line)
   nfo.close()
   return newfile
-
 
 def branchscrape(x, filename):
   i = 0
@@ -57,8 +74,11 @@ def bind():
 def main():
   bind()
   branches = get_branches()
+  new_serv, usrname, pswd = get_creds()
   for x in branches:
     filename = get_filename(x)
     newfile = branchscrape(x, filename)
+    populate_tree(newfile, new_serv, usrname, pswd)
+
 
 main()
