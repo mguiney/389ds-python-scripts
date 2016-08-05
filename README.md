@@ -11,8 +11,7 @@
   
 - Planned Features
   - A "-r" flag that allows for the parsing of multiple files at once
-    the priority, is set to a default value of 98, which is extremely low priority
-  - Possibly a "-t" flag that tests to see if the new file is valid, and opens the log file if it is not. Maybe. 
+  - Possibly a "-t" flag that adds the schema file to the local 389-ds server and tests for viability. Haven't decided if i want   this script to be that involved. 
 
 #################################################################################################################################
                                                 migrate-to-389.py
