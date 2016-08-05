@@ -2,21 +2,6 @@
 
 from ldap3 import *
 import os
-import scp
-
-def migrate(files): 
-  # get user input
-  hostname = input("Enter the hostname you are migrating your directory tree to:  ")
-  username = input("Enter the dn of the admin user of your new ds: ") 
-  targetdir = input("Enter the path of the directory in which you would like to place the files:  ")
-  # prep the target server for migration
-  configure()
-  # scp over the files 
-  client = scp.Client(host= hostname, user= username)
-  client.use_system_keys()
-  for x in files
-    client.transfer( x , targetdir )
-
 
 def ldif_cleanup(filename):
   newfile = filename[1:] 
@@ -30,6 +15,7 @@ def ldif_cleanup(filename):
       nfo.write(line)
   nfo.close()
   return newfile
+
 
 def branchscrape(x, filename):
   i = 0
@@ -64,18 +50,15 @@ def get_branches():
 def bind():
   global c
   s = Server('test389.cat.pdx.edu', get_info=ALL)
-  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='53JU/\N!')
+  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORD')
   if not c.bind():
     print('error in bind', c.result)
 
 def main():
-  files = []
   bind()
   branches = get_branches()
   for x in branches:
     filename = get_filename(x)
-    newfile =  branchscrape(x, filename)
-    files.append(newfile)
-  migrate(files) 
+    newfile = branchscrape(x, filename)
 
 main()
