@@ -1,8 +1,7 @@
-#!/usr/bin/python3
-
 from ldap3 import *
 import os
-from subprocess import * 
+import sys
+import subprocess
 
 def populate_tree(newfile, new_serv, usrname, pswd):
   #first we define and bind to our new server
@@ -11,10 +10,27 @@ def populate_tree(newfile, new_serv, usrname, pswd):
   c = Connection(s, user = usrname, password = pswd)
   if not c.bind():
     print('error in bind', c.result)
-  result = Popen(["ldapadd", "-h", new_serv, "-D", usrname, "-w", pswd, "-f", newfile], stdout=PIPE)
+  result = subprocess.Popen(["ldapadd", "-h", new_serv, "-D", usrname, "-w", pswd, "-f", newfile], stdout=PIPE)
   print result
-  
 
+def test_ldap(new_serv):
+  command = "systemctl status target.dirsrv"
+  ssh = subprocess.Popen(["ssh", new_serv, command], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
+  result = ssh.stdout.readlines()
+  if result == []: 
+    error = ssh.stderr.readlines()
+    print ("ERROR: " + error)
+    return 0 
+  else: 
+    if "inactive" in result: 
+      print("directory server not active. Please restart and try again. ") 
+      sys.exit()
+    elif "service not found" in result: 
+      print("389-ds not installed. Please install and try again. ") 
+      sys.exit()
+    else: 
+      return 1
+    
 def get_creds(): 
   new_serv = str(raw_input("Enter the fully qualified hostname of the server you are migrating to: "))
   usrname = str(raw_input("Enter the fully qualified dn of the admin user you will be using to build your tree: "))
@@ -67,9 +83,9 @@ def get_branches():
 def bind():
   global c
   s = Server('test389.cat.pdx.edu', get_info=ALL)
-  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORD')
+  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='53JU/\N!')
   if not c.bind():
-    print('error in bind', c.result)
+    print('error in bind')
 
 def main():
   bind()
@@ -78,7 +94,9 @@ def main():
   for x in branches:
     filename = get_filename(x)
     newfile = branchscrape(x, filename)
-    populate_tree(newfile, new_serv, usrname, pswd)
+    ldap_chk = test_ldap(new_serv) 
+    if ldap_chk == 1: 
+      populate_tree(newfile, new_serv, usrname, pswd)
 
 
 main()
