@@ -8,10 +8,10 @@
   -  7/27/16: Initial commit. Includes basic input sanitization and "--help" flag
   -  7/29/16: Small bugfix; added -p flag, which allows user to set load priority of the new file
   -  8/4/16:  Another small bugfix; switched from manual flag parsing to using argparse
+  -  8/7/16:  Added a -t flag that allows you to test if the schema breaks the server, and removes it if it does
   
 - Planned Features
   - A "-r" flag that allows for the parsing of multiple files at once
-  - Possibly a "-t" flag that adds the schema file to the local 389-ds server and tests for viability. Haven't decided if i want   this script to be that involved. 
 
 #################################################################################################################################
                                                 migrate-to-389.py
