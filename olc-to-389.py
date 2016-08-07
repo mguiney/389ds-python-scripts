@@ -6,18 +6,37 @@
 #  includes help flag, more features to come                      #
 ###################################################################
 
+import os
 import re
-import sys
 import argparse
+import glob
+from ldap3 import * 
+from shutil import copy
+
+def test_schema(newfile):
+  destpath = glob.glob('/etc/dirsrv/slapd-*/schema/')
+  destpath = destpath[0]
+  copy(newfile, destpath)
+  s = Server('test389.cat.pdx.edu', get_info=ALL)
+  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu',password='53JU/\N!')
+  if c.bind(): 
+    print("Schema successfully added and tested.")   
+  else: 
+    print("Schema conversion unsuccessful.") 
+    os.chdir(destpath)
+    os.remove(newfile)
+  
 
 def parse_args():
   parser = argparse.ArgumentParser(description = 'Automatically translates OpenLdap schema files to 389-ds format.')
-  parser.add_argument('filename', metavar='F', type=str, nargs='+', help='name of file to be converted.')
-  parser.add_argument('-p', '--priority', dest='priority', action='store', default='98', type=int, help='specifiy the priority level of the new 389 schema file')
+  parser.add_argument('filename', metavar='F', type=str, nargs='+', help='Name of file to be converted.')
+  parser.add_argument('-p', '--priority', dest='priority', action='store', default='98', type=int, help='Specifiy the priority level of the new 389 schema file')
+  parser.add_argument('-t', '-test', dest ='test', action='store', default='no', help='Check if the addition of the new schema breaks anything.')
   args = parser.parse_args()
   filename = str(args.filename[0])
   priority = str(args.priority)
-  return filename, priority
+  test = str(args.test)
+  return filename, priority, test
     
 
 def translate(entries, newfile):
@@ -59,7 +78,7 @@ def makefile(filename, priority):
   return newfile 
 
 def main():
-  filename, priority = parse_args()
+  filename, priority, test = parse_args()
   ldif_chk = ".ldif"
   if ldif_chk in filename: 
     newfile = makefile(filename, priority)
@@ -71,6 +90,9 @@ def main():
     entries = re.split('olc', lines)
     translate(entries, newfile)
     fileinput.close()
+    #now (maybe) add it in with the 0ther 389 schema and test
+    if test == 'yes': 
+      test_schema(newfile)
   else:
     print("ERROR: This is not an ldif file")
 
