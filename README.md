@@ -26,6 +26,6 @@
       - a "-s" flag that indicates the domain name of the new server
       - a "-u" flag that indicates the dn of the admin user that the script will be ldapadd-ing as 
       - a "-p" flag that passes in the password needed to authenticate as the admin user listed above 
-    - Will also be adding a "--help" flag that lists the functionality of the above flags, for obvious reasons. 
+    
   
 ################################################################################################################################
