@@ -4,6 +4,7 @@
                                                 olc-to-389.py 
 
 - General Purpose: parses openldap schema files, and reformats them into 389-ds schema files. takes filename as an argument
+
 - Features/Commits (with completion dates)
   -  7/27/16: Initial commit. Includes basic input sanitization and "--help" flag
   -  7/29/16: Small bugfix; added -p flag, which allows user to set load priority of the new file
@@ -17,12 +18,13 @@
                                                 migrate-to-389.py
   
   - General Purpose: to migrate the contents of an existing 389 directory to a new ds. prompts user for details of this server
+  
   - Features/Commits (with completion dates)
     -  8/3/16: Initial commit. Still very quirky, doesn't have full functionality
     -  8/5/16: now checks to see if 389-ds is running to a server specified by the user, and rebuilds the tree on that ds if the    service is, in fact, running.
-    - all destination server info is taken as command line arguments 
+    -  8/9/16: all destination server info is taken as command line arguments 
   
   -  Planned Features: 
-    - add user I/O option flag   
+    - Add user I/O option flag that prompts the user for server/administrator details rather than taking them as a command line option.  
   
 ################################################################################################################################
