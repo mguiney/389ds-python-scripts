@@ -18,7 +18,7 @@
 #################################################################################################################################
                                                 migrate-to-389.py
   
-  - General Purpose: to migrate the contents of an existing 389 directory to a new ds. prompts user for details of this server
+  - General Purpose: to migrate the contents of an existing directory to a new ds. prompts user for details of this server
   
   - Features/Commits (with completion dates)
     -  8/3/16: Initial commit. Still very quirky, doesn't have full functionality
@@ -30,7 +30,7 @@
   
   -  Usage notes: 
     - This script is meant to be run on the server you are migrating the directory tree from, not the one you are migrating it to. 
-    - the one you are migrating it to must have a pubkey from the source server, and you should start an ssh agent ahead of time  
-
+    - The ds you are migrating it to must have a pubkey from the source server, and you should start an ssh agent ahead of time.  
+    - If you have custom schema, please add them previous to running this script.
 
 ################################################################################################################################
