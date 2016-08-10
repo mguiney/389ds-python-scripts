@@ -99,7 +99,7 @@ def get_branches():
 def bind():
   global c
   s = Server('test389.cat.pdx.edu', get_info=ALL)
-  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='53JU/\N!')
+  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORDZ')
   if not c.bind():
     print('error in bind')
 
