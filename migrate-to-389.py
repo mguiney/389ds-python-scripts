@@ -13,7 +13,7 @@ def populate_tree(newfile, new_serv, usrname, pswd):
   c = Connection(s, user = usrname, password = pswd)
   if not c.bind():
     print('error in bind', c.result)
-  result = subprocess.Popen(["ldapadd", "-h", new_serv, "-D", usrname, "-w", pswd, "-f", newfile], stdout=PIPE)
+  result = subprocess.Popen(["ldapadd", "-h", new_serv, "-D", usrname, "-w", pswd, "-f", newfile], stdout=subprocess.PIPE)
   print result
 
 def test_ldap(new_serv):
@@ -99,7 +99,7 @@ def get_branches():
 def bind():
   global c
   s = Server('test389.cat.pdx.edu', get_info=ALL)
-  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORD')
+  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='53JU/\N!')
   if not c.bind():
     print('error in bind')
 
