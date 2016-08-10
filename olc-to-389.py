@@ -61,7 +61,7 @@ def reformat(x):
   # remove last remnants of olc format and replace them with empty comments
   # (389 schemas don't like whitespace outside of parens)
   if 'SchemaConfig' in x: 
-    return '#' 
+    return ' ' 
   elif '#' in x:
     delim = '#'
     return x.split(delim, 1)[0]
