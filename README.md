@@ -27,6 +27,10 @@
   
   -  Planned Features: 
     - Add user I/O option flag that prompts the user for server/administrator details rather than taking them as a command line option.  
+    - integrating the schema conversion script above so that: 
+        - you can be sure your schemas have been reformatted , transferred, and tested properly
+        - the process becomes less complicated as a whole for the user
+	- this will be implemented as a flag, so that it is not mandatory
   
   -  Usage notes: 
     - This script is meant to be run on the server you are migrating the directory tree from, not the one you are migrating it to. 
