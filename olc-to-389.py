@@ -5,7 +5,7 @@
 #  written by Megan Guiney                                        #
 #  includes help flag, more features to come                      #
 ###################################################################
-
+import sys
 import os
 import re
 import argparse
@@ -15,6 +15,7 @@ from shutil import copy
 
 def test_schema(newfile):
   destpath = glob.glob('/etc/dirsrv/slapd-*/schema/')
+  errpath = glob.glob('/var/log/dirsrv/slapd-*/errors')
   destpath = destpath[0]
   copy(newfile, destpath)
   s = Server('test389.cat.pdx.edu', get_info=ALL)
@@ -22,7 +23,10 @@ def test_schema(newfile):
   if c.bind(): 
     print("Schema successfully added and tested.")   
   else: 
-    print("Schema conversion unsuccessful.") 
+    print("Schema conversion unsuccessful. outputting error logs to screen: ")
+    with open(errpath, 'r') as dumplogs: 
+      print dumplogs.read()
+      dumplogs.close()
     os.chdir(destpath)
     os.remove(newfile)
   
