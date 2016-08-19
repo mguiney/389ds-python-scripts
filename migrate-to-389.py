@@ -59,10 +59,11 @@ def ldif_cleanup(filename):
   with open(filename) as oldfile:  
     for line in oldfile: 
       if '#' in line: 
-        line = "\n"
+        nfo.write("\n")
       elif 'version:' in line: 
-        line = "\n" 
-      nfo.write(line)
+        nfo.write("\n")
+      else: 
+        nfo.write(line)
   nfo.close()
   return newfile
 
@@ -74,6 +75,7 @@ def branchscrape(x, filename):
            search_scope = SUBTREE,
            attributes = [ALL_ATTRIBUTES])
   while i < len(c.entries):
+    #print(str(c.entries[i].entry_to_ldif()))
     fo.write(str(c.entries[i].entry_to_ldif()))
     i = i + 1
   newfile = ldif_cleanup(filename)
@@ -99,7 +101,7 @@ def get_branches():
 def bind():
   global c
   s = Server('test389.cat.pdx.edu', get_info=ALL)
-  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORDZ')
+  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORD')
   if not c.bind():
     print('error in bind')
 
@@ -109,7 +111,8 @@ def main():
   new_serv, usrname, pswd = parse_args()
   for x in branches:
     filename = get_filename(x)
-    newfile = branchscrape(x, filename)
+    #newfile = branchscrape(x, filename)
+    branchscrape(x, filename)
     ldap_chk = test_ldap(new_serv) 
     if ldap_chk == 1: 
       populate_tree(newfile, new_serv, usrname, pswd)
