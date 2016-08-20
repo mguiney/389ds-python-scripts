@@ -32,7 +32,8 @@
         - the process becomes less complicated as a whole for the user
 	- this will be implemented as a flag, so that it is not mandatory
   
-  -  Usage notes: 
+  -  Usage notes:
+    - DO NOT USE THIS RN, THE LIB IS TRUNCATING AUTOMOUNT LINES AND I HAVE YET TO FIX IT 
     - This script is meant to be run on the server you are migrating the directory tree from, not the one you are migrating it to. 
     - The ds you are migrating it to must have a pubkey from the source server, and you should start an ssh agent ahead of time.  
     - If you have custom schema, please add them previous to running this script.
