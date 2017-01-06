@@ -24,6 +24,7 @@
     -  8/3/16: Initial commit. Still very quirky, doesn't have full functionality
     -  8/5/16: now checks to see if 389-ds is running to a server specified by the user, and rebuilds the tree on that ds if the    service is, in fact, running.
     -  8/9/16: all destination server info is taken as command line arguments 
+    -  1/5/17: no longer uses the library that truncates lines. back in a working state. 
   
   -  Planned Features: 
     - Add user I/O option flag that prompts the user for server/administrator details rather than taking them as a command line option.  
@@ -33,9 +34,9 @@
 	- this will be implemented as a flag, so that it is not mandatory
   
   -  Usage notes:
-    - DO NOT USE THIS RN, THE LIB IS TRUNCATING AUTOMOUNT LINES AND I HAVE YET TO FIX IT 
     - This script is meant to be run on the server you are migrating the directory tree from, not the one you are migrating it to. 
     - The ds you are migrating it to must have a pubkey from the source server, and you should start an ssh agent ahead of time.  
     - If you have custom schema, please add them previous to running this script.
-
+    - for more information on flags, use the -h or --help option while running the script
+   
 ################################################################################################################################
