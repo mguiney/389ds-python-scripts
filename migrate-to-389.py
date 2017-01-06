@@ -70,38 +70,37 @@ def ldif_cleanup(filename):
 def branchscrape(x, filename):
   i = 0
   fo = open( filename, "a")
-  c.search(search_base = x,
-           search_filter = '(!(aci=*))',
-           search_scope = SUBTREE,
-           attributes = [ALL_ATTRIBUTES])
-  while i < len(c.entries):
-    #print(str(c.entries[i].entry_to_ldif()))
-    fo.write(str(c.entries[i].entry_to_ldif()))
-    i = i + 1
+  print "scraping branch with the base: " + x.split('dn:',1)[1] 
+  cmd = "ldapsearch -o ldif-wrap=no -xLLL -h haopenldap -D 'uid=you,dc=example,dc=com' -w 'SECRET_PASSWORD' -b " + x.split('dn:',1)[1] + " -s sub"
+  search = subprocess.check_output(cmd, shell=True, executable='/bin/bash')
+  search = search.split("\n")
+  for x in search:
+    fo.write(x + "\n")
+  fo.close()
   newfile = ldif_cleanup(filename)
   os.remove(filename)
   return newfile
 
 def get_filename(x):
-  x = x[3:]
+  x = x[7:]
   x = x.split(',',1)[0]
   filename = "_" + x.lower() + ".ldif"
   return filename
 
 def get_branches():
   branches = []
-  c.search(search_base = 'dc=cat,dc=pdx,dc=edu',
-           search_filter = '(!(cn=*))',
-           search_scope = LEVEL,
-           attributes = 'dn')
-  for branch in c.response:
-    branches.append(str(branch['dn']))
+  cmd = "ldapsearch -o ldif-wrap=no -xLLL -h haopenldap -D 'uid=you,dc=example,dc=com' -w 'SECRET_PASSWORD' -b 'dc=example,dc=com' -s one | grep dn"
+  search = subprocess.check_output(cmd, shell=True, executable='/bin/bash')
+  search = search.split("\n")
+  for x in search:
+      if 'cn' not in x and x != '': 
+        branches.append(x)
   return branches
 
 def bind():
   global c
-  s = Server('test389.cat.pdx.edu', get_info=ALL)
-  c = Connection(s, user='cn=admin,dc=cat,dc=pdx,dc=edu', password='SECRET_PASSWORD')
+  s = Server('haopenldap.cat.pdx.edu', get_info=ALL)
+  c = Connection(s, user='uid=you,dc=example,dc=com', password='SECRET_PASSWORD')
   if not c.bind():
     print('error in bind')
 
@@ -111,11 +110,10 @@ def main():
   new_serv, usrname, pswd = parse_args()
   for x in branches:
     filename = get_filename(x)
-    #newfile = branchscrape(x, filename)
-    branchscrape(x, filename)
-    ldap_chk = test_ldap(new_serv) 
-    if ldap_chk == 1: 
-      populate_tree(newfile, new_serv, usrname, pswd)
+    newfile = branchscrape(x, filename)
+    #ldap_chk = test_ldap(new_serv) 
+    #if ldap_chk == 1: 
+      #populate_tree(newfile, new_serv, usrname, pswd)
 
 
 main()
